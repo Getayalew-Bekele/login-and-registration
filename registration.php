@@ -1,8 +1,6 @@
 <?php
-// register.php - Registration page with database insertion logic
 require_once 'database.php';
 
-// Check if user is already logged in
 if (isset($_SESSION['user_id'])) {
     header("Location: dashboard.php");
     exit();
@@ -11,9 +9,7 @@ if (isset($_SESSION['user_id'])) {
 $success_message = '';
 $error_message = '';
 
-// Handle registration form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['register'])) {
-    // Sanitize and validate inputs
     $first_name = trim($_POST['first_name'] ?? '');
     $last_name = trim($_POST['last_name'] ?? '');
     $department = trim($_POST['department'] ?? '');
@@ -32,7 +28,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['register'])) {
     if (empty($password)) $errors[] = "Password is required";
     if (strlen($password) < 4) $errors[] = "Password must be at least 4 characters";
     
-    // Check if username already exists
     if (empty($errors)) {
         try {
             $check_stmt = $pdo->prepare("SELECT id FROM information WHERE username = ?");
@@ -45,13 +40,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['register'])) {
         }
     }
     
-    // If no errors, insert user using prepared statement
+
     if (empty($errors)) {
         try {
-            // Hash password for security
             $hashed_password = password_hash($password, PASSWORD_BCRYPT);
             
-            // Use prepared statement to prevent SQL injection
             $sql = "INSERT INTO information (first_name, last_name, department, gender, hobbies, username, password) 
                     VALUES (?, ?, ?, ?, ?, ?, ?)";
             
@@ -60,7 +53,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['register'])) {
             
             if ($result) {
                 $success_message = "Registration successful! You can now login.";
-                // Clear form via JavaScript (handled in JS)
             } else {
                 $error_message = "Registration failed. Please try again.";
             }
