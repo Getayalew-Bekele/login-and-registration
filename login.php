@@ -1,14 +1,9 @@
 <?php
-// login.php - Login page with authentication logic
 require_once 'database.php';
 
-// Check if user is already logged in
+$error_message ="";
 
-$error_message = '';
-
-// Handle login form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login'])) {
-    // Sanitize and validate input
     $username = trim($_POST['username'] ?? '');
     $password = $_POST['password'] ?? '';
     
@@ -16,13 +11,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login'])) {
         $error_message = "Please fill in all fields";
     } else {
         try {
-            // Use prepared statement to prevent SQL injection
             $stmt = $pdo->prepare("SELECT id, username, password, first_name, last_name FROM information WHERE username = ?");
             $stmt->execute([$username]);
             $user = $stmt->fetch();
             
             if ($user && password_verify($password, $user['password'])) {
-                // Set session variables
                 $_SESSION['user_id'] = $user['id'];
                 $_SESSION['username'] = $user['username'];
                 $_SESSION['full_name'] = $user['first_name'] . ' ' . $user['last_name'];
