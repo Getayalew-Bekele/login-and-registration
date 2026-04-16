@@ -1,6 +1,3 @@
-// script.js - Client-side form validation and interactions
-
-// Form validation for login page
 const loginForm = document.getElementById('loginForm');
 if (loginForm) {
     loginForm.addEventListener('submit', function(e) {
@@ -54,7 +51,6 @@ if (registerForm) {
         }
     });
     
-    // Real-time password validation
     const passwordInput = document.getElementById('regPassword');
     if (passwordInput) {
         passwordInput.addEventListener('input', function() {
@@ -69,7 +65,6 @@ if (registerForm) {
     }
 }
 
-// Helper function to show messages
 function showMessage(message, type, formType) {
     const messageDiv = document.createElement('div');
     messageDiv.className = `message-area ${type}`;
@@ -89,7 +84,6 @@ function showMessage(message, type, formType) {
     }, 5000);
 }
 
-// Clear button confirmation
 const resetButtons = document.querySelectorAll('.btn-secondary');
 resetButtons.forEach(btn => {
     btn.addEventListener('click', function(e) {
