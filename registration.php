@@ -1,10 +1,7 @@
 <?php
+// register.php - Registration page with database insertion logic
+session_start();
 require_once 'database.php';
-
-if (isset($_SESSION['user_id'])) {
-    header("Location: dashboard.php");
-    exit();
-}
 
 $success_message = '';
 $error_message = '';
@@ -18,7 +15,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['register'])) {
     $username = trim($_POST['username'] ?? '');
     $password = $_POST['password'] ?? '';
     
-    // Validation
     $errors = [];
     if (empty($first_name)) $errors[] = "First name is required";
     if (empty($last_name)) $errors[] = "Last name is required";
@@ -40,11 +36,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['register'])) {
         }
     }
     
-
     if (empty($errors)) {
         try {
             $hashed_password = password_hash($password, PASSWORD_BCRYPT);
-            
+
             $sql = "INSERT INTO information (first_name, last_name, department, gender, hobbies, username, password) 
                     VALUES (?, ?, ?, ?, ?, ?, ?)";
             

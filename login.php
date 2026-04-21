@@ -1,8 +1,11 @@
 <?php
+// login.php - Login page with authentication logic
+session_start();
 require_once 'database.php';
 
-$error_message ="";
+$error_message = '';
 
+// Handle login form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login'])) {
     $username = trim($_POST['username'] ?? '');
     $password = $_POST['password'] ?? '';
@@ -32,6 +35,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login'])) {
 }
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['newaccount'])) {
     header("location: registration.php");
+}
+if (isset($_SESSION['user_id'])) {
+    $success_message = "You are already logged in as " . $_SESSION['username'];
 }
 ?>
 <!DOCTYPE html>
